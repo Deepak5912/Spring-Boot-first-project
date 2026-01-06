@@ -26,6 +26,20 @@ public class UseController {
         return "User created successfully";
     }
 
+    @PutMapping  // for update the data
+    public String updateUser(@RequestBody User user) {
+        System.out.println(user.getId());
+        System.out.println(user.getEMail());
+        System.out.println(user.getName());
+
+        if (userDb.containsKey(user.getId()))
+            userDb.put(user.getId(), user);
+        return "user updated successfully";
+
+    }
+
+
+
 
 
 
