@@ -18,6 +18,15 @@ public class UseController {
         return userDb;
     }
 
+    @PostMapping  // for create the data
+    public String createUser(@RequestBody User user) {
+        System.out.println(user.getEMail());
+        System.out.println(user.getName());
+        userDb.putIfAbsent(user.getId(), user);
+        return "User created successfully";
+    }
+
+
 
 
 }
