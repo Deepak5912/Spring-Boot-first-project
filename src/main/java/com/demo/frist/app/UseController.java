@@ -37,7 +37,16 @@ public class UseController {
         return "user updated successfully";
 
     }
+    // for deletelion of the data
 
+    // callilng like this http://localhost:8080/user/1, where 1 is the id to be deleted
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable int id) {
+        userDb.remove(id);
+        System.out.println("id deleted successfully");
+        return "id deleted successfully";
+
+    }
 
 
 
