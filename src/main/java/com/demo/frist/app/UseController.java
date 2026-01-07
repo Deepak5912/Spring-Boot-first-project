@@ -49,10 +49,13 @@ public class UseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         if(!userDb.containsKey(id))
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("id not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();   // if no any body to return then use build()
         userDb.remove(id);
         System.out.println("id deleted successfully");
-        return ResponseEntity.status(HttpStatus.OK).body("id deleted successfully");
+        //return ResponseEntity.status(HttpStatus.OK).body("id deleted successfully");
+                    // return  ResponseEntity.ok("id deleted successfully");// another way of writing the same  above line
+        // if you  want to retun the status code content not found then use this line
+        return  ResponseEntity.noContent().build();
 
     }
 
