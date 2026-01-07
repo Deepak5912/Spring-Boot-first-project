@@ -1,6 +1,8 @@
 package com.demo.frist.app;
 
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -19,11 +21,11 @@ public class UseController {
     }
 
     @PostMapping  // for create the data
-    public String createUser(@RequestBody User user) {
+    public ResponseEntity<String> createUser(@RequestBody User user) {
         System.out.println(user.getEMail());
         System.out.println(user.getName());
         userDb.putIfAbsent(user.getId(), user);
-        return "User created successfully";
+        return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully") ;
     }
 
     @PutMapping  // for update the data
@@ -42,6 +44,8 @@ public class UseController {
     // callilng like this http://localhost:8080/user/1, where 1 is the id to be deleted
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable int id) {
+        if(!userDb.containsKey(id))
+                return "user not found";
         userDb.remove(id);
         System.out.println("id deleted successfully");
         return "id deleted successfully";
