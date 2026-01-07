@@ -21,22 +21,26 @@ public class UseController {
     }
 
     @PostMapping  // for create the data
-    public ResponseEntity<String> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         System.out.println(user.getEMail());
         System.out.println(user.getName());
         userDb.putIfAbsent(user.getId(), user);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully") ;
+        return ResponseEntity.status(HttpStatus.CREATED).body(user) ;
     }
 
     @PutMapping  // for update the data
-    public String updateUser(@RequestBody User user) {
+    public ResponseEntity<String> updateUser(@RequestBody User user) {
         System.out.println(user.getId());
         System.out.println(user.getEMail());
         System.out.println(user.getName());
+        if(!userDb.containsKey(user.getId()))
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not found");
 
         if (userDb.containsKey(user.getId()))
             userDb.put(user.getId(), user);
-        return "user updated successfully";
+        return ResponseEntity.status(HttpStatus.OK).body("user updated successfully");
+
+
 
     }
     // for deletelion of the data
