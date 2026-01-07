@@ -47,12 +47,12 @@ public class UseController {
 
     // callilng like this http://localhost:8080/user/1, where 1 is the id to be deleted
     @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable int id) {
+    public ResponseEntity<String> deleteUser(@PathVariable int id) {
         if(!userDb.containsKey(id))
-                return "user not found";
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("id not found");
         userDb.remove(id);
         System.out.println("id deleted successfully");
-        return "id deleted successfully";
+        return ResponseEntity.status(HttpStatus.OK).body("id deleted successfully");
 
     }
 
