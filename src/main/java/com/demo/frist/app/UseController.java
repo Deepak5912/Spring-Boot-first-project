@@ -12,7 +12,8 @@ import java.util.Map;
 @RequestMapping("/user")
 
 public class UseController {
-    private Map<Integer, User> userDb = new HashMap<>();
+    private final Map<Integer, User> userDb = new HashMap<>();
+
 
 
     @GetMapping
@@ -36,8 +37,7 @@ public class UseController {
         if(!userDb.containsKey(user.getId()))
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not found");
 
-        if (userDb.containsKey(user.getId()))
-            userDb.put(user.getId(), user);
+        userDb.put(user.getId(), user);
         return ResponseEntity.status(HttpStatus.OK).body("user updated successfully");
 
 
@@ -59,10 +59,18 @@ public class UseController {
         return  ResponseEntity.noContent().build();
 
     }
-
+    //  for single user get by id
+    // calling like this http://localhost:8080/user/1 , where 1 is the id to be fetched ///
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable int id) {
+        User user = userDb.get(id);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(user);
+    }
 
 
 
 
 }
-
