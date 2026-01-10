@@ -61,8 +61,8 @@ public class UseController {
     }
     //  for single user get by id
     // calling like this http://localhost:8080/user/1 , where 1 is the id to be fetched ///
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable int id) {
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUser(@PathVariable("userId") int id) {
         User user = userDb.get(id);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -70,6 +70,16 @@ public class UseController {
         return ResponseEntity.ok(user);
     }
 
+// for multiple user get by id
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserOrder(@PathVariable("userId") int id,@PathVariable int orderId) {
+        System.out.println("order id is "+ orderId);
+        User user = userDb.get(id);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(user);
+    }
 
 
 
