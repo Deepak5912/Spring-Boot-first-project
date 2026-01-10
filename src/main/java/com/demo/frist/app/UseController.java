@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -71,16 +73,38 @@ public class UseController {
     }
 
 // for multiple user get by id
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserOrder(@PathVariable("userId") int id,@PathVariable int orderId) {
-        System.out.println("order id is "+ orderId);
-        User user = userDb.get(id);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.ok(user);
-    }
+//    @GetMapping("/{userId}")
+//    public ResponseEntity<User> getUserOrder(@PathVariable("userId") int id,@PathVariable int orderId) {
+//        System.out.println("order id is "+ orderId);
+//        User user = userDb.get(id);
+//        if (user == null) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
+//        return ResponseEntity.ok(user);
+//    }
 
+    // for request param :- means ?key=value request paramter used to filter the data and for sorting the data
+    // calling like this http://localhost:8080/user/query?name=John Doe
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> searchUser(@RequestParam(value = "name", required = false, defaultValue = "lily") String name,
+        @RequestParam(value = "email", required = false, defaultValue = "dk@gmail.com") String email) {
+        System.out.println("search name: " + name);
+        List<User> result = new ArrayList<>();
+        if (name == null || name.trim().isEmpty()) {
+            result.addAll(userDb.values());
+        } else {
+            String q = name.trim().toLowerCase();
+            for (User u : userDb.values()) {
+                if (u.getName() != null && u.getName().toLowerCase().contains(q)) {
+                    result.add(u);
+                } else if (u.getEMail() != null && u.getEMail().toLowerCase().contains(q)) {
+                    result.add(u);
+                }
+            }
+        }
+        return ResponseEntity.ok(result);
+
+    }
 
 
 }
