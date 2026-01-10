@@ -105,6 +105,11 @@ public class UseController {
         return ResponseEntity.ok(result);
 
     }
+    @GetMapping("/info")
+    public String getInfo(@RequestHeader("user-Agent") String userAgent) {
+
+        return "User-Agent: " + userAgent;
+    }
 
 
 }
